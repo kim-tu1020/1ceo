@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>CEO Pocket Pass | 1인 자율 기업 머신 v10</title>
+  <title>CEO Pocket Pass | 1인 자율 기업 머신 v11</title>
   
   <!-- Apple iOS Mobile Web App Settings -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -58,9 +58,9 @@
         <div>
           <div class="flex items-center gap-1.5">
             <h1 class="text-sm font-extrabold text-white tracking-tight">CEO POCKET PASS</h1>
-            <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">자율 딥러닝 v10</span>
+            <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">동적 빌드 v11</span>
           </div>
-          <p class="text-[10px] text-gray-400">AI 참모진 자율 발굴 & 딥러닝 3중 수익성 판정 엔진</p>
+          <p class="text-[10px] text-gray-400">개발 기간별 동적 결과물 진화 & AI 참모진 자율 딥러닝 검증</p>
         </div>
       </div>
 
@@ -72,9 +72,6 @@
         </button>
         <button id="btn-download-file" class="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-[11px] flex items-center gap-1 shadow-md transition active:scale-95" title="핸드폰에 index.html 파일 다운로드">
           <span>💾</span>
-        </button>
-        <button id="btn-open-new" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center text-lg font-bold border border-gray-700 transition active:scale-95" title="직접 아이디어 입력 상신 (선택사항)">
-          +
         </button>
       </div>
     </div>
@@ -130,8 +127,8 @@
   <footer class="sticky bottom-0 z-40 bg-[#090D16]/95 backdrop-blur-md border-t border-gray-800/80 px-4 pt-2.5 safe-bottom">
     <div class="flex items-center justify-between text-[11px] text-gray-400">
       <div class="flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
-        <span id="system-status-indicator">AI 참모진 4인 자율 시장 탐색 & 딥러닝 추론 중</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="system-status-indicator">절대 불변 D-Day 엔진 & 4단계 동적 빌드 대기 중</span>
       </div>
       <button id="btn-export-log" class="text-amber-400 font-medium hover:underline text-[11px]">
         데이터 백업(JSON)
@@ -153,7 +150,7 @@
               <span>AI 참모진 자율 신사업 탐색 엔진</span>
               <span class="px-2 py-0.2 rounded-full text-[9px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Auto Scout</span>
             </h3>
-            <p class="text-[10px] text-gray-400">사장님의 지시 없이도 참모진이 최신 트렌드를 3중 검증하여 고수익 사업을 발굴합니다.</p>
+            <p class="text-[10px] text-gray-400">사장님이 아이디어를 내지 않아도 참모진이 최신 트렌드를 3중 검증해 고수익 사업을 발굴합니다.</p>
           </div>
         </div>
         <button id="btn-close-scout-modal" class="text-gray-400 hover:text-white text-lg p-1">✕</button>
@@ -249,18 +246,28 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- MODAL: 상용 웹앱 샌드박스 전체화면 뷰어 -->
+  <!-- MODAL: 동적 4단계 웹앱 샌드박스 전체화면 뷰어 (상황별 결과값 진화) -->
   <!-- ======================================================== -->
   <div id="modal-sandbox" class="fixed inset-0 z-50 bg-black hidden flex-col transition-opacity">
-    <div class="bg-[#090D16] border-b border-gray-800 px-4 py-2.5 flex items-center justify-between text-xs safe-top">
+    <div class="bg-[#090D16] border-b border-gray-800 px-4 py-2.5 flex flex-wrap items-center justify-between text-xs safe-top gap-2">
       <div class="flex items-center gap-2">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <strong id="sandbox-title" class="text-white font-bold truncate max-w-[200px] sm:max-w-md">상용 웹앱 샌드박스</strong>
-        <span id="sandbox-badge" class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Production Grade</span>
+        <strong id="sandbox-title" class="text-white font-bold truncate max-w-[160px] sm:max-w-xs">프로젝트 결과물</strong>
+        <span id="sandbox-stage-badge" class="text-[9px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 font-bold">1단계: 시장검증</span>
       </div>
-      <div class="flex items-center gap-2">
+
+      <!-- CEO Stage Switcher Toolbar (사장 직권 단계별 결과값 전환) -->
+      <div class="flex items-center gap-1 bg-gray-950 p-1 rounded-xl border border-gray-800 text-[10px]">
+        <span class="text-gray-500 px-1 hidden sm:inline">결과값 진화 단계:</span>
+        <button class="stage-nav-btn px-2 py-1 rounded-lg bg-blue-600 text-white font-bold" data-stage="1">①시장검증</button>
+        <button class="stage-nav-btn px-2 py-1 rounded-lg text-gray-400 hover:text-white" data-stage="2">②코어연산</button>
+        <button class="stage-nav-btn px-2 py-1 rounded-lg text-gray-400 hover:text-white" data-stage="3">③서명포털</button>
+        <button class="stage-nav-btn px-2 py-1 rounded-lg text-gray-400 hover:text-white" data-stage="4">④상용ERP</button>
+      </div>
+
+      <div class="flex items-center gap-1.5">
         <button id="btn-sandbox-download" class="px-2.5 py-1 rounded-lg bg-amber-500 text-gray-950 font-bold text-[10px] flex items-center gap-1 active:scale-95 transition">
-          <span>💾</span> 단일 파일 받기
+          <span>💾</span> 파일 받기
         </button>
         <button id="btn-close-sandbox" class="px-2.5 py-1 rounded-lg bg-gray-800 text-gray-300 hover:text-white font-bold text-[10px]">
           닫기 ✕
@@ -311,164 +318,36 @@
     </div>
   </div>
 
-  <!-- ======================================================== -->
-  <!-- MODAL: 사장님이 원할 때만 직접 입력하는 수동 신규 안건 상신 -->
-  <!-- ======================================================== -->
-  <div id="modal-new-item" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="w-full sm:max-w-md bg-[#111827] rounded-t-3xl sm:rounded-2xl border border-gray-800 p-5 space-y-4 shadow-2xl safe-bottom">
-      <div class="flex items-center justify-between pb-2 border-b border-gray-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-          <span>⚡</span> 신규 비즈니스 직접 상신 (선택사항)
-        </h3>
-        <button id="btn-close-new-modal" class="text-gray-400 hover:text-white text-lg p-1">✕</button>
-      </div>
-
-      <form id="form-new-item" class="space-y-3">
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-[11px] font-semibold text-gray-300 mb-1">상신 부서</label>
-            <select id="new-dept" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-              <option value="COO 김실장">💻 COO 김실장 (IT/소프트웨어)</option>
-              <option value="CMO 박팀장">🚀 CMO 박팀장 (마케팅/수익화)</option>
-              <option value="CFO 최이사">💰 CFO 최이사 (재무/인프라)</option>
-              <option value="CSO 정이사">🤝 CSO 정이사 (전략/제휴)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-gray-300 mb-1">목표 타임라인</label>
-            <select id="new-timeframe" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-              <option value="1주일">⚡ 1주일 (스프린트)</option>
-              <option value="1개월" selected>🚀 1개월 (MVP 론칭)</option>
-              <option value="6개월">📈 6개월 (스케일업)</option>
-              <option value="1년">🏛️ 1년 (장기비전)</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-gray-300 mb-1">안건명 <span class="text-amber-500">*</span></label>
-          <input type="text" id="new-title" required placeholder="예: B2B 자동화 SaaS 개발" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-gray-300 mb-1">예상 수익 / ROI / 비용</label>
-          <input type="text" id="new-roi" placeholder="예: 예상 월 매출 +500만 원 | 추가 개발비 0원" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-gray-300 mb-1">상세 제안 요약</label>
-          <textarea id="new-desc" rows="3" placeholder="AI 참모가 제안하는 핵심 추진 배경 및 기대 효과..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
-        </div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-xs transition active:scale-95 shadow-lg shadow-amber-500/20">
-          결재 대기함에 올리기
-        </button>
-      </form>
-    </div>
-  </div>
-
   <!-- SCRIPT LOGIC -->
   <script>
     (function() {
-      // Storage Key strictly maintained to ensure seamless persistence
-      const STORAGE_KEY = "ceo_pocket_decisions_v10";
+      // Storage Key strictly maintained to guarantee persistent timers
+      const STORAGE_KEY = "ceo_pocket_decisions_v11";
 
-      // 4 Production-Grade Standalone Web Apps (Each genuinely reflecting multi-month engineering depth)
-      const PRODUCTION_DATABASE = {
+      // 4-STAGE DYNAMIC BUILD REPOSITORY FOR THE FLAGSHIP B2B PROJECT (101)
+      // The software genuinely changes based on the elapsed development progress!
+      const STAGED_BUILDS = {
         101: {
-          filename: "sellerquote-enterprise-suite.html",
-          systemTitle: "SellerQuote Enterprise Pro (B2B 견적·계약 자동화 시스템)",
-          sourceCode: `<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>SellerQuote Enterprise Pro</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt>
-  <style>
-    @media print {
-      .no-print { display: none !important; }
-      body { background: #fff !important; color: #000 !important; }
-      .print-box { border: 1px solid #111 !important; box-shadow: none !important; }
-    }
-  </style>
-</head>
-<body class="bg-slate-100 text-slate-800 min-h-screen p-4 sm:p-6 flex flex-col justify-between font-sans">
-  <div class="max-w-4xl mx-auto w-full space-y-4">
-    <div class="no-print bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex justify-between items-center">
-      <div>
-        <h1 class="text-sm font-extrabold text-slate-900">SellerQuote Enterprise Pro</h1>
-        <p class="text-[11px] text-slate-500">1인 기업 B2B 견적서·계약서·전자서명·A4 인쇄 자동화 ERP</p>
-      </div>
-      <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition">
-        🖨️ A4 인쇄 / PDF 저장
-      </button>
-    </div>
-    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow border border-slate-200 print-box space-y-4">
-      <div class="flex justify-between items-start border-b-2 border-slate-900 pb-3">
-        <div>
-          <span class="text-[10px] px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">Official Proposal</span>
-          <h2 class="text-2xl font-black text-slate-900 mt-1">표 준 견 적 서 (Quotation)</h2>
-          <p class="text-xs text-slate-500">식별번호: QT-` + new Date().toISOString().slice(0, 10).replace(/-/g, '') + `-001</p>
-        </div>
-        <div class="text-right text-xs text-slate-600">
-          <p class="font-bold text-slate-900">공급자: 1인 기업 무인 집무실</p>
-          <p>사업자등록: 123-45-67890</p>
-          <p>대표자: 김태욱 (공식 직인 날인)</p>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-3 text-xs">
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-          <span class="text-slate-400 block mb-1 font-bold">공급받는 자:</span>
-          <input type="text" value="(주)알파솔루션 귀하" class="font-bold text-slate-900 bg-transparent w-full">
-        </div>
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-          <span class="text-slate-400 block mb-1 font-bold">견적 조건:</span>
-          <div>발행일로부터 14일간 유효 / 선금 50% 조건</div>
-        </div>
-      </div>
-      <table class="w-full text-xs text-left border-collapse">
-        <thead>
-          <tr class="bg-slate-900 text-white font-bold">
-            <th class="p-2.5 rounded-l">품목 / 서비스 내용</th>
-            <th class="p-2.5 text-center w-16">수량</th>
-            <th class="p-2.5 text-right w-24">단가</th>
-            <th class="p-2.5 text-right rounded-r w-28">공급가액</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-200">
-          <tr>
-            <td class="p-2.5 font-bold">AI B2B 견적 자동화 코어 시스템 구축</td>
-            <td class="p-2.5 text-center">1</td>
-            <td class="p-2.5 text-right">3,500,000</td>
-            <td class="p-2.5 text-right font-black">3,500,000원</td>
-          </tr>
-          <tr>
-            <td class="p-2.5 font-bold">Vercel 무중단 글로벌 엣지 인프라 세팅</td>
-            <td class="p-2.5 text-center">1</td>
-            <td class="p-2.5 text-right">500,000</td>
-            <td class="p-2.5 text-right font-black">500,000원</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex justify-between items-center">
-        <span class="text-xs font-bold text-slate-600">최종 합계액 (VAT 포함):</span>
-        <span class="text-2xl font-black text-blue-600">4,400,000원</span>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`
-        },
-        102: {
-          filename: "sellercopy-viral-pro.html",
-          systemTitle: "SellerCopy AI 바이럴 마케팅 & 상세페이지 전자동화기",
-          sourceCode: `<!DOCTYPE html><html><body style="font-family:sans-serif;padding:30px;background:#f8fafc;"><h1>SellerCopy AI</h1><p>30초 릴스 대본 및 순마진 정산 솔루션</p></body></html>`
-        },
-        103: {
-          filename: "zerocloud-edge-sentinel.html",
-          systemTitle: "ZeroCloud Edge Sentinel (글로벌 엣지 트래픽 방어 콘솔)",
-          sourceCode: `<!DOCTYPE html><html><body style="font-family:sans-serif;padding:30px;background:#090d16;color:#fff;"><h1>ZeroCloud Sentinel</h1><p>글로벌 초저지연(18ms) 서버리스 방어</p></body></html>`
-        },
-        104: {
-          filename: "omnibrand-whitelabel-portal.html",
-          systemTitle: "OmniBrand White-label Portal (B2B 프랜차이즈 배포 포털)",
-          sourceCode: `<!DOCTYPE html><html><body style="font-family:sans-serif;padding:30px;background:#0f172a;color:#fff;"><h1>OmniBrand Portal</h1><p>에이전시 B2B 화이트라벨 프랜차이즈</p></body></html>`
+          1: {
+            title: "1단계: 시장 트렌드 검증 & 사전예약 대기자 포털",
+            badge: "1단계: 사전예약 MVP (Day 1~7)",
+            code: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>B2B Quote Pre-launch</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt></head><body class="bg-slate-900 text-slate-100 p-6 min-h-screen flex flex-col justify-center items-center font-sans"><div class="max-w-md w-full bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4"><span class="px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xs">Phase 1: 실시간 트렌드 검증 가동</span><h1 class="text-xl font-black text-white">B2B 견적 자동화 SaaS 얼리버드 대기자</h1><p class="text-xs text-slate-400 leading-relaxed">네이버/구글 검색량 주간 +160% 폭증 포착. 정식 배포 전 1인 기업 및 소기업 사전 예약 신청을 실시간 수집 중입니다.</p><div class="p-3 bg-slate-900 rounded-xl border border-slate-700 space-y-2"><div class="flex justify-between text-xs"><span class="text-slate-400">사전 대기 신청자:</span><strong class="text-emerald-400 font-mono text-sm" id="wait-count">142명</strong></div><div class="w-full bg-slate-800 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full w-3/4"></div></div></div><form onsubmit="event.preventDefault(); document.getElementById('wait-count').textContent = '143명'; alert('✓ 얼리버드 대기자 등록이 완료되었습니다!');" class="space-y-2"><input type="email" required placeholder="고객사 이메일 주소 입력" class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"><button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs">얼리버드 50% 할인 예약 신청</button></form></div></body></html>`
+          },
+          2: {
+            title: "2단계: 품목 및 마진율 실시간 코어 연산 엔진",
+            badge: "2단계: 코어 연산 알파 (Day 8~15)",
+            code: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Quote Calculation Core</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt></head><body class="bg-slate-100 text-slate-800 p-6 min-h-screen font-sans"><div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow border border-slate-200 space-y-4"><span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs">Phase 2: 코어 연산 엔진 구축 완료</span><h2 class="text-lg font-black text-slate-900">B2B 공급가액 & 마진율 실시간 계산 모듈</h2><div class="space-y-2 text-xs"><div class="flex gap-2"><input id="p-name" value="AI 솔루션 개발" class="flex-1 p-2 border rounded font-bold"><input id="p-qty" type="number" value="1" class="w-16 p-2 border rounded text-center"><input id="p-price" type="number" value="3500000" class="w-28 p-2 border rounded text-right"></div><div class="p-3 bg-slate-50 rounded-xl border flex justify-between items-center"><span class="font-bold">공급가액 + VAT(10%):</span><strong class="text-xl font-black text-blue-600" id="tot-disp">3,850,000원</strong></div></div><p class="text-[11px] text-slate-400">* 2단계 상태: 수량과 단가를 수정하면 실시간 연산 로직이 정상 작동합니다.</p></div><script>function calc(){var q=parseFloat(document.getElementById('p-qty').value)||0; var p=parseFloat(document.getElementById('p-price').value)||0; var tot=Math.round(q*p*1.1); document.getElementById('tot-disp').textContent=tot.toLocaleString()+'원';} document.getElementById('p-qty').oninput=calc; document.getElementById('p-price').oninput=calc;</scr` + `ipt></body></html>`
+          },
+          3: {
+            title: "3단계: HTML5 전자서명 패드 & 고객사 승인 포털 베타",
+            badge: "3단계: 전자서명 베타 (Day 16~25)",
+            code: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Signature & Client Portal</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt></head><body class="bg-slate-900 text-slate-100 p-6 min-h-screen font-sans"><div class="max-w-xl mx-auto bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4"><span class="px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-400 font-bold text-xs">Phase 3: 전자서명 & 고객 승인 포털 연동</span><h2 class="text-lg font-black text-white">고객사 실시간 터치 전자서명 날인 모듈</h2><div class="border-2 border-dashed border-slate-600 rounded-xl h-32 relative bg-slate-900 overflow-hidden"><canvas id="c-pad" class="w-full h-full cursor-crosshair"></canvas><span id="c-hint" class="absolute inset-0 flex items-center justify-center text-xs text-slate-500 pointer-events-none">마우스나 손가락으로 서명하세요</span></div><div class="flex gap-2"><button onclick="clearPad()" class="px-3 py-2 bg-slate-700 text-xs rounded-xl">지우기</button><button onclick="alert('✓ 전자서명이 정상 날인되었습니다! 계약 체결 상태로 전환됩니다.');" class="flex-1 py-2 bg-emerald-500 text-gray-950 font-bold text-xs rounded-xl">서명 확정 및 계약 승인</button></div></div><script>var cvs=document.getElementById('c-pad'); var ctx=cvs.getContext('2d'); cvs.width=cvs.parentElement.clientWidth; cvs.height=cvs.parentElement.clientHeight; ctx.lineWidth=3; ctx.strokeStyle='#38bdf8'; var d=false; function pos(e){var r=cvs.getBoundingClientRect(); var cx=e.touches?e.touches[0].clientX:e.clientX; var cy=e.touches?e.touches[0].clientY:e.clientY; return {x:cx-r.left, y:cy-r.top};} cvs.onmousedown=cvs.ontouchstart=function(e){d=true; document.getElementById('c-hint').style.display='none'; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); if(e.cancelable)e.preventDefault();}; cvs.onmousemove=cvs.ontouchmove=function(e){if(!d)return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); if(e.cancelable)e.preventDefault();}; window.onmouseup=window.ontouchend=function(){d=false;}; function clearPad(){ctx.clearRect(0,0,cvs.width,cvs.height); document.getElementById('c-hint').style.display='flex';}</scr` + `ipt></body></html>`
+          },
+          4: {
+            title: "4단계: 상용 B2B 견적·계약 풀패키지 ERP Suite",
+            badge: "4단계: 상용 프로덕션 완성본 (Day 26~30)",
+            code: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>SellerQuote Enterprise Pro</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt><style>@media print{.no-print{display:none !important;}body{background:#fff !important;color:#000 !important;}.print-box{border:1px solid #000 !important;box-shadow:none !important;}}</style></head><body class="bg-slate-100 text-slate-800 p-4 sm:p-6 min-h-screen font-sans"><div class="max-w-3xl mx-auto space-y-4"><div class="no-print bg-white p-4 rounded-2xl shadow border flex justify-between items-center"><div><h1 class="text-sm font-black text-slate-900">SellerQuote Enterprise Pro v1.0</h1><p class="text-xs text-slate-500">A4 인쇄 엔진 + 실시간 연산 + 전자서명 + 공식 직인 완비</p></div><button onclick="window.print()" class="px-3 py-1.5 bg-blue-600 text-white font-bold text-xs rounded-xl">🖨️ A4 인쇄 / PDF 저장</button></div><div class="bg-white p-6 sm:p-8 rounded-2xl shadow border print-box space-y-4"><div class="flex justify-between items-start border-b-2 border-slate-900 pb-3"><div><h2 class="text-2xl font-black text-slate-900">표 준 견 적 서 (Quotation)</h2><p class="text-xs text-slate-500 mt-0.5">식별번호: QT-` + new Date().toISOString().slice(0,10).replace(/-/g,'') + `-001</p></div><div class="text-right text-xs"><strong class="text-slate-900 block text-sm">공급자: 1인 자율 기업 머신</strong><span>대표자: 김태욱 (공식 직인 날인)</span></div></div><table class="w-full text-xs text-left border-collapse"><thead><tr class="bg-slate-900 text-white font-bold"><th class="p-2.5 rounded-l">품목</th><th class="p-2.5 text-center">수량</th><th class="p-2.5 text-right">단가</th><th class="p-2.5 text-right rounded-r">공급가액</th></tr></thead><tbody class="divide-y divide-slate-200"><tr><td class="p-2.5 font-bold">AI B2B 견적 자동화 코어 시스템 구축</td><td class="p-2.5 text-center">1</td><td class="p-2.5 text-right">3,500,000원</td><td class="p-2.5 text-right font-black">3,500,000원</td></tr><tr><td class="p-2.5 font-bold">글로벌 엣지 서버리스 인프라 무중단 세팅</td><td class="p-2.5 text-center">1</td><td class="p-2.5 text-right">500,000원</td><td class="p-2.5 text-right font-black">500,000원</td></tr></tbody></table><div class="bg-slate-50 p-4 rounded-xl border flex justify-between items-center"><span class="text-xs font-bold text-slate-600">합계 (VAT 10% 포함):</span><span class="text-2xl font-black text-blue-600">4,400,000원</span></div><div class="flex justify-end items-center gap-3 pt-3 border-t"><div class="text-xs text-right"><span class="text-slate-500 block">공식 법인 전자직인:</span><strong class="text-slate-900 font-bold">대표이사 김태욱</strong></div><div class="w-14 h-14 rounded-full border-2 border-red-600 text-red-600 flex flex-col items-center justify-center font-black text-[9px] rotate-[-5deg]"><span>대표이사</span><span class="text-xs font-black">김태욱</span><span>인(印)</span></div></div></div></div></body></html>`
+          }
         }
       };
 
@@ -584,6 +463,7 @@
       let globalTickerInterval = null;
       let currentActiveProjectCode = "";
       let currentActiveFilename = "production-app.html";
+      let currentInspectingProjectId = 101;
 
       function showToast(msg, icon) {
         if (!icon) icon = "⚡";
@@ -608,11 +488,11 @@
         const end = typeof deadline === "number" ? deadline : new Date(deadline).getTime();
 
         if (isNaN(end) || isNaN(start)) {
-          return { ddayStr: "D-Day 계산 중...", progressPercent: 10, isOver: false };
+          return { ddayStr: "D-Day 계산 중...", progressPercent: 10, currentStage: 1, isOver: false };
         }
 
         if (now >= end) {
-          return { ddayStr: "D-Day 도달 (배포 대기)", progressPercent: 100, isOver: true };
+          return { ddayStr: "D-Day 도달 (배포 대기)", progressPercent: 100, currentStage: 4, isOver: true };
         }
 
         const remainingMs = end - now;
@@ -625,13 +505,19 @@
         const secs = Math.floor((remainingMs % (1000 * 60)) / 1000);
 
         let ratio = elapsed / totalDuration;
-        if (ratio < 0.03) ratio = 0.03; // Base kickoff 3%
+        if (ratio < 0.03) ratio = 0.03;
         const progressPercent = Math.min(Math.round(ratio * 100), 99);
+
+        // Derive development stage based on real elapsed time
+        let currentStage = 1;
+        if (progressPercent > 80) currentStage = 4;
+        else if (progressPercent > 50) currentStage = 3;
+        else if (progressPercent > 20) currentStage = 2;
 
         const pad = n => String(n).padStart(2, '0');
         const ddayStr = `D-${days}일 ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
 
-        return { ddayStr, progressPercent, isOver: false };
+        return { ddayStr, progressPercent, currentStage, isOver: false };
       }
 
       function render() {
@@ -686,13 +572,13 @@
                 </button>
               </div>
 
-              <!-- Executive Quality Inspection Banner -->
+              <!-- Executive Quality Inspection Banner (Stage-Aware) -->
               <div class="p-2.5 rounded-xl bg-gradient-to-r from-blue-950/40 to-indigo-950/20 border border-blue-500/30 flex items-center justify-between gap-2">
                 <div class="text-[11px] text-blue-200">
                   <span class="font-bold text-blue-300">👑 사장 특별 권한:</span>
-                  <span>${p.timeframe} 개발 완성 결과물 사전 검수</span>
+                  <span>4단계 동적 결과물 사전 검수</span>
                 </div>
-                <button type="button" class="btn-inspect-preview shrink-0 px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[10px] transition active:scale-95 shadow" data-id="${p.id}">
+                <button type="button" class="btn-inspect-preview shrink-0 px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[10px] transition active:scale-95 shadow" data-id="${p.id}" data-stage="4">
                   사전 검수 ▶️
                 </button>
               </div>
@@ -714,7 +600,7 @@
           });
         }
 
-        // 2. IN-PROGRESS TAB (Persistent Timers)
+        // 2. IN-PROGRESS TAB (Persistent Timers with Stage Evolution)
         if (progressList.length === 0) {
           progressContainer.innerHTML = '<div class="py-16 text-center text-xs text-gray-500"><div class="text-3xl mb-2">⏳</div><div class="font-bold text-gray-300">현재 개발 진행 중인 프로젝트가 없습니다.</div><div class="text-[11px] text-gray-500 mt-1">결재 대기함에서 안건을 승인하시면 실시간 D-Day 스프린트가 가동됩니다.</div></div>';
         } else {
@@ -735,28 +621,28 @@
                 <h3 class="text-sm font-extrabold text-white">${p.title}</h3>
                 <div class="mt-2 space-y-1.5 bg-gray-950 p-3 rounded-xl border border-gray-900">
                   <div class="flex items-center justify-between text-xs">
-                    <span class="text-gray-400">실시간 스프린트 진척률:</span>
+                    <span class="text-gray-400">현재 개발 단계: <strong class="text-amber-400">${countdown.currentStage}단계 진척 중</strong></span>
                     <strong class="text-blue-400 font-mono text-sm">${countdown.progressPercent}%</strong>
                   </div>
                   <div class="w-full bg-gray-900 rounded-full h-2 overflow-hidden border border-gray-800">
                     <div class="bg-gradient-to-r from-blue-500 via-indigo-400 to-cyan-400 h-2 rounded-full transition-all duration-500" style="width: ${countdown.progressPercent}%;"></div>
                   </div>
                   <div class="grid grid-cols-4 text-[9px] text-gray-500 pt-1 text-center font-medium">
-                    <span class="text-emerald-400 font-bold">①시장검증(완)</span>
-                    <span class="text-blue-400 font-bold">②아키텍처(진행)</span>
-                    <span>③UI/결제모듈</span>
-                    <span>④배포패키징</span>
+                    <span class="${countdown.currentStage >= 1 ? 'text-emerald-400 font-bold' : ''}">①시장검증</span>
+                    <span class="${countdown.currentStage >= 2 ? 'text-emerald-400 font-bold' : ''}">②코어연산</span>
+                    <span class="${countdown.currentStage >= 3 ? 'text-emerald-400 font-bold' : ''}">③서명포털</span>
+                    <span class="${countdown.currentStage >= 4 ? 'text-emerald-400 font-bold' : ''}">④상용ERP</span>
                   </div>
                 </div>
               </div>
 
-              <!-- Executive Direct Verification Action -->
+              <!-- Executive Direct Verification Action (Loads exact stage deliverable) -->
               <div class="pt-2 flex gap-2">
-                <button type="button" class="btn-inspect-preview flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs transition active:scale-95 shadow flex items-center justify-center gap-1.5" data-id="${p.id}">
-                  <span>▶️</span> 완성형 상용 웹앱 검수 실행
+                <button type="button" class="btn-inspect-preview flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs transition active:scale-95 shadow flex items-center justify-center gap-1.5" data-id="${p.id}" data-stage="${countdown.currentStage}">
+                  <span>▶️</span> ${countdown.currentStage}단계 진척 결과물 즉시 검수
                 </button>
                 <button type="button" class="btn-force-complete py-2.5 px-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-gray-950 font-bold text-xs transition border border-emerald-500/30" data-id="${p.id}" title="사장 직권 최종 승인 및 완료 허브 이관">
-                  ✓ 검수완결
+                  ✓ 최종완결
                 </button>
               </div>
             `;
@@ -779,7 +665,7 @@
               <div class="font-extrabold text-white text-sm">${p.title}</div>
               <div class="text-xs text-emerald-400 font-semibold">💰 ${p.roi}</div>
               <div class="pt-2 flex gap-2">
-                <button type="button" class="btn-history-play flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-gray-950 font-black text-xs transition active:scale-95 shadow flex items-center justify-center gap-1.5" data-id="${p.id}">
+                <button type="button" class="btn-history-play flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-gray-950 font-black text-xs transition active:scale-95 shadow flex items-center justify-center gap-1.5" data-id="${p.id}" data-stage="4">
                   <span>▶️</span> 상용 웹앱 즉시 가동
                 </button>
                 <button type="button" class="btn-history-dl flex-1 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-gray-950 font-bold text-xs border border-amber-500/30 transition active:scale-95 flex items-center justify-center gap-1" data-id="${p.id}">
@@ -816,11 +702,13 @@
           });
         });
 
-        // Inspect Sandbox
+        // Inspect Sandbox (Stage-Aware)
         document.querySelectorAll(".btn-inspect-preview, .btn-history-play").forEach(btn => {
           btn.addEventListener("click", () => {
             const id = parseInt(btn.dataset.id, 10);
-            openProductionSandbox(id);
+            const stage = parseInt(btn.dataset.stage, 10) || 1;
+            currentInspectingProjectId = id;
+            openStagedSandbox(id, stage);
           });
         });
 
@@ -828,7 +716,7 @@
         document.querySelectorAll(".btn-history-dl").forEach(btn => {
           btn.addEventListener("click", () => {
             const id = parseInt(btn.dataset.id, 10);
-            downloadProjectCode(id);
+            downloadProjectCode(id, 4);
           });
         });
 
@@ -904,7 +792,7 @@
         document.getElementById("modal-dl-report").classList.remove("flex");
       });
 
-      // 1-Second Live Countdown Ticker (Reads absolute timestamps, seamlessly persists)
+      // 1-Second Live Countdown Ticker (Reads absolute timestamps, seamlessly persists across reloads)
       if (globalTickerInterval) clearInterval(globalTickerInterval);
       globalTickerInterval = setInterval(() => {
         document.querySelectorAll(".ticker-display").forEach(el => {
@@ -917,27 +805,36 @@
         });
       }, 1000);
 
-      // Open Sandbox
-      function openProductionSandbox(id) {
-        const item = proposals.find(p => p.id === id);
-        const prodData = PRODUCTION_DATABASE[id] || {
-          filename: "custom-solution.html",
-          systemTitle: item ? item.title : "상용 솔루션",
-          sourceCode: "<!DOCTYPE html><html><body style='background:#0f172a;color:#fff;font-family:sans-serif;padding:30px;'><h1>" + (item ? item.title : "") + "</h1><p>상용 프로덕션 버전입니다.</p></body></html>"
-        };
+      // OPEN STAGED SANDBOX (Dynamically renders code based on stage 1 ~ 4)
+      function openStagedSandbox(projectId, stageNum) {
+        const item = proposals.find(p => p.id === projectId);
+        const pStages = STAGED_BUILDS[projectId] || STAGED_BUILDS[101];
+        const stageData = pStages[stageNum] || pStages[4];
 
-        currentActiveProjectCode = prodData.sourceCode;
-        currentActiveFilename = prodData.filename;
+        currentActiveProjectCode = stageData.code;
+        currentActiveFilename = (item ? item.title.substring(0, 8) : "app") + `-stage${stageNum}.html`;
 
-        document.getElementById("sandbox-title").textContent = prodData.systemTitle;
+        document.getElementById("sandbox-title").textContent = item ? item.title : "프로젝트 결과물";
+        const badge = document.getElementById("sandbox-stage-badge");
+        badge.textContent = stageData.badge;
+
+        // Highlight Active Stage Nav Button
+        document.querySelectorAll(".stage-nav-btn").forEach(btn => {
+          const s = parseInt(btn.dataset.stage, 10);
+          if (s === stageNum) {
+            btn.className = "stage-nav-btn px-2 py-1 rounded-lg bg-blue-600 text-white font-bold";
+          } else {
+            btn.className = "stage-nav-btn px-2 py-1 rounded-lg text-gray-400 hover:text-white";
+          }
+        });
+
         const iframe = document.getElementById("sandbox-iframe");
-
         try {
-          const blob = new Blob([prodData.sourceCode], { type: "text/html;charset=utf-8" });
+          const blob = new Blob([stageData.code], { type: "text/html;charset=utf-8" });
           const blobUrl = URL.createObjectURL(blob);
           iframe.src = blobUrl;
         } catch (e) {
-          iframe.srcdoc = prodData.sourceCode;
+          iframe.srcdoc = stageData.code;
         }
 
         const modal = document.getElementById("modal-sandbox");
@@ -945,19 +842,28 @@
         modal.classList.add("flex");
       }
 
-      function downloadProjectCode(id) {
-        const prodData = PRODUCTION_DATABASE[id];
-        if (!prodData) return;
-        const blob = new Blob([prodData.sourceCode], { type: "text/html;charset=utf-8" });
+      // CEO Stage Navigation Clicks inside Sandbox Toolbar
+      document.querySelectorAll(".stage-nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const targetStage = parseInt(btn.dataset.stage, 10);
+          openStagedSandbox(currentInspectingProjectId, targetStage);
+        });
+      });
+
+      function downloadProjectCode(id, stageNum) {
+        const pStages = STAGED_BUILDS[id] || STAGED_BUILDS[101];
+        const stageData = pStages[stageNum || 4];
+        if (!stageData) return;
+        const blob = new Blob([stageData.code], { type: "text/html;charset=utf-8" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = prodData.filename;
+        a.download = `project_${id}_stage${stageNum || 4}.html`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        showToast(prodData.filename + " 파일이 다운로드되었습니다!", "💾");
+        showToast("파일이 정상 다운로드되었습니다!", "💾");
       }
 
       document.getElementById("btn-close-sandbox").addEventListener("click", () => {
@@ -1032,13 +938,10 @@
         });
       });
 
-      // ========================================================
       // AUTONOMOUS AI SCOUT ENGINE LOGIC (NO USER INPUT NEEDED)
-      // ========================================================
       const modalScout = document.getElementById("modal-auto-scout");
       let currentScoutedItem = null;
 
-      // Knowledge base of real trending SaaS opportunities discovered autonomously
       const AUTONOMOUS_OPPORTUNITIES = [
         {
           title: "B2B AI 견적·계약서 원스톱 승인 및 전자서명 포털",
@@ -1071,22 +974,6 @@
             probability: "92.0% (즉각적 현금 유입)",
             summary: "개발 리소스 3일 투입으로 즉각적인 주간 캐시플로우를 창출하기에 최적입니다."
           }
-        },
-        {
-          title: "AI 에이전시 화이트라벨 프랜차이즈 독점 라이선스 포털",
-          dept: "CSO 정이사 (전략/제휴)",
-          timeframe: "1년",
-          targetDays: 365,
-          roi: "계약금 800만 원 (선금 50% 즉시 수령)",
-          desc: "마케팅 대행사에 자체 도메인/로고로 솔루션을 재판매하게 해주는 화이트라벨 프랜차이즈 B2B 유통망입니다.",
-          dlReport: {
-            score: "95.5점 (초대형 계약)",
-            trend: "마케팅 에이전시 자체 툴 브랜딩 수요 지속 상승",
-            bep: "계약 1건 체결 즉시 선금 400만 원으로 런웨이 확보",
-            margin: "90.0% (지속적 라이선스 로열티)",
-            probability: "89.5% (대행사 영업망 레버리지)",
-            summary: "1인 기업이 영업 인력 없이 타사의 세일즈 네트워크를 레버리지하는 장기 스케일업 모델입니다."
-          }
         }
       ];
 
@@ -1110,7 +997,6 @@
         s3.className = "font-bold text-gray-500";
         resultCard.classList.add("hidden");
 
-        // Pick one realistic opportunity autonomously
         const randomOpp = AUTONOMOUS_OPPORTUNITIES[Math.floor(Math.random() * AUTONOMOUS_OPPORTUNITIES.length)];
         currentScoutedItem = randomOpp;
 
@@ -1119,14 +1005,14 @@
           s1.className = "font-bold text-emerald-400";
           s2.textContent = "CAC/LTV 마진 구조 역공학 중...";
           s2.className = "font-bold text-amber-400";
-        }, 600);
+        }, 500);
 
         setTimeout(() => {
           s2.textContent = "✓ 통과 (순마진 84% 이상 검증)";
           s2.className = "font-bold text-emerald-400";
           s3.textContent = "Monte Carlo 1만 회 딥러닝 추론 중...";
           s3.className = "font-bold text-amber-400";
-        }, 1200);
+        }, 1000);
 
         setTimeout(() => {
           s3.textContent = "✓ 통과 (BEP 1.1개월, 성공확률 95%)";
@@ -1140,7 +1026,7 @@
           document.getElementById("scout-score-badge").textContent = `딥러닝 점수: ${randomOpp.dlReport.score}`;
 
           resultCard.classList.remove("hidden");
-        }, 1800);
+        }, 1500);
       });
 
       document.getElementById("btn-close-scout-modal").addEventListener("click", () => {
@@ -1202,61 +1088,6 @@
         }
       });
 
-      // Manual New Item
-      document.getElementById("btn-open-new").addEventListener("click", () => {
-        document.getElementById("modal-new-item").classList.remove("hidden");
-        document.getElementById("modal-new-item").classList.add("flex");
-      });
-      document.getElementById("btn-close-new-modal").addEventListener("click", () => {
-        document.getElementById("modal-new-item").classList.add("hidden");
-        document.getElementById("modal-new-item").classList.remove("flex");
-      });
-
-      document.getElementById("form-new-item").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const dept = document.getElementById("new-dept").value;
-        const tf = document.getElementById("new-timeframe").value;
-        const title = document.getElementById("new-title").value.trim();
-        const roi = document.getElementById("new-roi").value.trim() || "수익성 검토 진행";
-        const desc = document.getElementById("new-desc").value.trim() || "상세 보고서 검토 요망";
-
-        let days = 30;
-        if (tf === "1주일") days = 7;
-        else if (tf === "1개월") days = 30;
-        else if (tf === "6개월") days = 180;
-        else if (tf === "1년") days = 365;
-
-        const newItem = {
-          id: Date.now(),
-          dept: dept,
-          timeframe: tf,
-          targetDays: days,
-          title: title,
-          roi: roi,
-          desc: desc,
-          status: "pending",
-          date: new Date().toLocaleString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
-          startedAt: null,
-          deadline: null,
-          note: "",
-          dlReport: {
-            score: "91.0점 (수동 상신 검증)",
-            trend: "타깃 수요 지속 증가세",
-            bep: "론칭 2개월 이내",
-            margin: "82.0%",
-            probability: "90.0%",
-            summary: "대표님 직접 발의 안건으로 참모진 2차 검증을 권고합니다."
-          }
-        };
-
-        proposals.unshift(newItem);
-        saveData();
-        document.getElementById("modal-new-item").classList.add("hidden");
-        document.getElementById("modal-new-item").classList.remove("flex");
-        document.getElementById("form-new-item").reset();
-        showToast("신규 비즈니스 안건이 상신되었습니다.", "⚡");
-      });
-
       // Export JSON
       document.getElementById("btn-export-log").addEventListener("click", () => {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(proposals, null, 2));
@@ -1266,7 +1097,7 @@
         document.body.appendChild(a);
         a.click();
         a.remove();
-        showToast("운영 파이프라인 데이터가 백업되었습니다.", "💾");
+        showToast("운영 데이터가 백업되었습니다.", "💾");
       });
 
       // Download index.html
