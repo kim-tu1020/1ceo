@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CEO Pocket Pass | 1인 기업 무인 자율경영 오피스</title>
+  
+  <!-- Apple iOS Mobile Web App Settings -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CEO 집무실">
+  <meta name="theme-color" content="#090D16">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #090D16;
+      color: #F3F4F6;
+      -webkit-tap-highlight-color: transparent;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .safe-bottom {
+      padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+    }
+    .glass-card {
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    @keyframes pulse-fast {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .pulse-terminal {
+      animation: pulse-fast 1s infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-12 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-slate-900/95 border border-amber-500/40 text-amber-300 text-xs font-bold shadow-2xl flex items-center gap-2 pointer-events-none transition-all duration-300 opacity-0 -translate-y-4">
+    <span id="toast-icon">⚡</span>
+    <span id="toast-msg">시스템 알림</span>
+  </div>
+
+  <!-- Top iOS Header Bar -->
+  <header class="sticky top-0 z-40 bg-[#090D16]/95 backdrop-blur-md border-b border-gray-800/80 px-4 pt-3 pb-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 flex items-center justify-center text-gray-950 font-black text-sm shadow-md shadow-amber-500/20">
+          👑
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-sm font-extrabold text-white tracking-tight">CEO POCKET PASS</h1>
+            <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 font-bold">무인 자율경영 v6</span>
+          </div>
+          <p class="text-[10px] text-gray-400">AI 직원의 자율 기획 상신 & 사장 전용 최종 결재함</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-1.5">
+        <button id="btn-call-meeting" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-[11px] flex items-center gap-1 shadow-md transition active:scale-95" title="AI 참모진 자율 전략회의 소집">
+          <span>🎙️</span>
+          <span class="hidden sm:inline">자율기획 상신</span>
+        </button>
+        <button id="btn-download-file" class="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-[11px] flex items-center gap-1 shadow-md transition active:scale-95" title="핸드폰에 index.html 파일 다운로드">
+          <span>💾</span>
+          <span class="hidden sm:inline">저장</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Timeline Cycle Filter Bar (1주일 / 1개월 / 6개월 / 1년) -->
+    <div class="mt-3 grid grid-cols-5 p-1 bg-gray-950 rounded-xl border border-gray-800 text-[11px] font-semibold text-center">
+      <button class="cycle-filter-btn py-1.5 rounded-lg bg-amber-500 text-gray-950 font-bold transition" data-cycle="all">
+        전체
+      </button>
+      <button class="cycle-filter-btn py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-cycle="1week">
+        1주일(단기)
+      </button>
+      <button class="cycle-filter-btn py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-cycle="1month">
+        1개월(중기)
+      </button>
+      <button class="cycle-filter-btn py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-cycle="6month">
+        6개월(도약)
+      </button>
+      <button class="cycle-filter-btn py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-cycle="1year">
+        1년(비전)
+      </button>
+    </div>
+
+    <!-- Segmented Tab Switcher -->
+    <div class="mt-2.5 grid grid-cols-2 p-1 bg-gray-900/90 rounded-xl border border-gray-800 text-xs font-semibold">
+      <button id="tab-pending-btn" class="py-1.5 rounded-lg bg-gray-800 text-amber-400 font-bold transition flex items-center justify-center gap-1.5">
+        <span>📋 결재 대기 안건</span>
+        <span id="badge-pending" class="px-1.5 py-0.2 bg-gray-950 text-amber-400 rounded-full text-[10px] font-extrabold">4</span>
+      </button>
+      <button id="tab-history-btn" class="py-1.5 rounded-lg text-gray-400 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span>🚀 가동 중인 프로젝트</span>
+        <span id="badge-history" class="px-1.5 py-0.2 bg-gray-950 text-gray-400 rounded-full text-[10px]">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Feed Area -->
+  <main class="flex-1 px-4 py-4 space-y-4 overflow-y-auto custom-scroll">
+
+    <!-- 1. PENDING VIEW (Pre-rendered with 4 Time-Horizon Proposals) -->
+    <div id="view-pending" class="space-y-3.5">
+      <!-- Injected by render() with full timeline metadata -->
+    </div>
+
+    <!-- 2. HISTORY VIEW -->
+    <div id="view-history" class="hidden space-y-3">
+      <div class="py-12 text-center text-xs text-gray-500">아직 결재 완료되어 가동 중인 프로젝트가 없습니다.</div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Executive Summary Status -->
+  <footer class="sticky bottom-0 z-40 bg-[#090D16]/95 backdrop-blur-md border-t border-gray-800/80 px-4 pt-2.5 safe-bottom">
+    <div class="flex items-center justify-between text-[11px] text-gray-400">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>AI 직속 참모단 4명 상시 가동 중</span>
+      </div>
+      <button id="btn-export-log" class="text-amber-400 font-medium hover:underline text-[11px]">
+        경영 데이터 백업(JSON)
+      </button>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 1: 자율 실행 & 검증 머신 콘솔 -->
+  <!-- ======================================================== -->
+  <div id="modal-machine" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 sm:p-5 transition-opacity">
+    <div class="w-full sm:max-w-xl bg-[#0F172A] rounded-3xl border border-gray-700/80 p-5 sm:p-6 space-y-4 shadow-2xl safe-bottom text-xs max-h-[92vh] flex flex-col justify-between">
+      
+      <!-- Top Title Bar -->
+      <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-sm">⚡</div>
+          <div>
+            <h3 class="text-sm font-extrabold text-white flex items-center gap-1.5">
+              <span>자율 집무실 실행 엔진</span>
+              <span id="machine-step-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">1단계: 수요 검증</span>
+            </h3>
+            <p id="machine-project-title" class="text-[11px] text-gray-400 truncate max-w-[260px] sm:max-w-md">프로젝트명</p>
+          </div>
+        </div>
+        <button id="btn-close-machine" class="text-gray-400 hover:text-white text-lg p-1">✕</button>
+      </div>
+
+      <!-- Live Progress Bar -->
+      <div class="space-y-1.5 bg-gray-950 p-3.5 rounded-2xl border border-gray-800">
+        <div class="flex items-center justify-between font-bold">
+          <span id="machine-status-text" class="text-gray-300 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            관련 자료 및 타깃 시장 자동 조사 중...
+          </span>
+          <span id="machine-percent" class="text-emerald-400 text-sm font-mono font-black">0%</span>
+        </div>
+        <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden p-0.5 border border-gray-800">
+          <div id="machine-progress-fill" class="bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 h-1.5 rounded-full transition-all duration-300 w-0"></div>
+        </div>
+        <div class="grid grid-cols-4 text-[9px] text-gray-500 pt-1 font-medium text-center">
+          <span id="phase-lbl-1" class="text-emerald-400 font-bold">①시장수요</span>
+          <span id="phase-lbl-2">②홍보에셋</span>
+          <span id="phase-lbl-3">③MVP빌드</span>
+          <span id="phase-lbl-4">④정식배포</span>
+        </div>
+      </div>
+
+      <!-- Live Terminal / Build Log -->
+      <div class="space-y-1">
+        <div class="flex items-center justify-between text-[10px] text-gray-400 font-mono">
+          <span>> 참모진 자율 실행 터미널</span>
+          <span class="pulse-terminal text-emerald-400">● LIVE RUNNING</span>
+        </div>
+        <div id="machine-terminal-log" class="bg-black/90 border border-gray-800 rounded-xl p-3 font-mono text-[11px] text-gray-300 space-y-1 h-32 overflow-y-auto custom-scroll leading-relaxed">
+          <!-- Logs injected by JS -->
+        </div>
+      </div>
+
+      <!-- Auto-Generated Market Research & Strategy Box -->
+      <div id="machine-market-box" class="hidden bg-gray-950/80 rounded-2xl p-3 border border-gray-800 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
+            <span>📊</span> 참모진 시장 조사 & ROI 보고서
+          </span>
+          <span class="text-[10px] text-emerald-400 font-semibold">인사이트 추출 완료</span>
+        </div>
+        <div id="machine-market-content" class="text-[11px] text-gray-300 space-y-1 leading-relaxed bg-black/40 p-2.5 rounded-xl border border-gray-900 max-h-24 overflow-y-auto custom-scroll">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Bottom Action Center (Revealed upon 100%) -->
+      <div id="machine-success-actions" class="hidden pt-2 space-y-2">
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-preview-app" class="py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-gray-950 font-black text-xs transition active:scale-95 shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-1.5">
+            <span>▶️</span> 실제 웹앱 즉시 가동
+          </button>
+          <button id="btn-download-app-file" class="py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-gray-950 font-black text-xs transition active:scale-95 shadow-lg shadow-amber-500/25 flex items-center justify-center gap-1.5">
+            <span>💾</span> 단일 파일 받기 (.html)
+          </button>
+        </div>
+        <button id="btn-finish-machine" class="w-full py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-[11px] transition">
+          확인 완료 (가동 프로젝트 보관함으로 이동)
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 2: 실제 작동 웹앱 샌드박스 전체화면 뷰어 -->
+  <!-- ======================================================== -->
+  <div id="modal-sandbox" class="fixed inset-0 z-50 bg-black hidden flex-col transition-opacity">
+    <div class="bg-[#090D16] border-b border-gray-800 px-4 py-2.5 flex items-center justify-between text-xs safe-top">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <strong id="sandbox-title" class="text-white font-bold truncate max-w-[200px] sm:max-w-md">실제 작동 웹앱</strong>
+        <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Live Sandbox</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btn-sandbox-download" class="px-2.5 py-1 rounded-lg bg-amber-500 text-gray-950 font-bold text-[10px] flex items-center gap-1">
+          <span>💾</span> 다운로드
+        </button>
+        <button id="btn-close-sandbox" class="px-2.5 py-1 rounded-lg bg-gray-800 text-gray-300 hover:text-white font-bold text-[10px]">
+          닫기 ✕
+        </button>
+      </div>
+    </div>
+    <div class="flex-1 w-full bg-white relative">
+      <iframe id="sandbox-iframe" class="w-full h-full border-0" sandbox="allow-scripts allow-modals allow-forms allow-same-origin"></iframe>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 3: 조건부 보류 및 수정 지시 입력창 -->
+  <!-- ======================================================== -->
+  <div id="modal-action" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity">
+    <div class="w-full sm:max-w-md bg-[#111827] rounded-t-3xl sm:rounded-2xl border border-gray-800 p-5 space-y-4 shadow-2xl safe-bottom">
+      <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+        <div>
+          <span id="modal-action-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+            조건부 보류
+          </span>
+          <h3 id="modal-target-title" class="text-sm font-bold text-white mt-1">안건명</h3>
+        </div>
+        <button id="btn-close-modal" class="text-gray-400 hover:text-white text-lg p-1">✕</button>
+      </div>
+
+      <div class="space-y-2">
+        <label for="modal-note-input" class="block text-xs font-semibold text-gray-300">
+          사장님 지시 사항 & 사유 메모:
+        </label>
+        <textarea id="modal-note-input" rows="3" placeholder="예: 단가를 15% 깎아서 재상신할 것 / 기능 A 빼고 MVP만 먼저 출시할 것..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
+      </div>
+
+      <!-- Quick Preset Tags -->
+      <div class="space-y-1.5">
+        <span class="text-[10px] text-gray-400">빠른 지시 템플릿:</span>
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" class="preset-tag text-[10px] bg-gray-900 border border-gray-800 px-2.5 py-1 rounded-lg text-gray-300 hover:border-amber-500">외주비 0원 AI 자체개발로 전환</button>
+          <button type="button" class="preset-tag text-[10px] bg-gray-900 border border-gray-800 px-2.5 py-1 rounded-lg text-gray-300 hover:border-amber-500">선금 50% 입금 확인 후 착수</button>
+          <button type="button" class="preset-tag text-[10px] bg-gray-900 border border-gray-800 px-2.5 py-1 rounded-lg text-gray-300 hover:border-amber-500">단기 ROI 미달로 영구 반려</button>
+        </div>
+      </div>
+
+      <div class="pt-2 flex gap-2">
+        <button id="btn-confirm-action" class="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-xs transition active:scale-95 shadow-lg shadow-amber-500/20">
+          결재 확정 전달
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    (function() {
+      const STORAGE_KEY = "ceo_pocket_decisions_v6";
+
+      // Autonomous Staff Database with 4 Time Horizons
+      const PROPOSALS_DATA = [
+        {
+          id: 101,
+          cycle: "1week",
+          cycleLabel: "⚡ 1주일 초단기 스프린트",
+          officer: "CMO 박팀장 (마케팅 총괄)",
+          avatar: "📢",
+          title: "AI B2B 견적 자동화 툴 무료 배포 & 7일 내 잠재고객 100명 DB 선점",
+          reason: "“사장님, 신규 고객 유입이 정체되어 있습니다. 유료 결제 전에 '30초 견적서 무료 PDF 출력기'를 커뮤니티에 7일간 무료 오픈하여 구매 의향 고객 100명의 연락처를 먼저 확보하는 것을 강력히 제안합니다.”",
+          roi: "목표 리드: 100명 확보 | 소요 비용: 0원 (자체 배포)",
+          actionPlan: "Day 1 1장 랜딩페이지 배포 ➔ Day 2~3 릴스/커뮤니티 바이럴 ➔ Day 4~7 리드 100명 회수",
+          status: "pending",
+          date: "10-22 10:15",
+          filename: "b2b-quote-mvp.html",
+          marketReport: `[CMO 박팀장의 1주일 바이럴 시장 분석]
+- 타깃 틈새: 견적서 수기 작성에 매달 10시간 이상 허비하는 프리랜서·1인 에이전시 220만 명.
+- 바이럴 전술: '엑셀 수기 견적서 버리고 30초 만에 PDF 뽑는 무료 툴' 후킹 카피로 직장인/창업 커뮤니티 장악.
+- 1주일 목표: 광고비 0원으로 유효 리드 100명 수집 후 유료 구독 온보딩 연결.`,
+          buildLogs: [
+            "CMO 박팀장: 네이버 쇼핑 및 구글 '견적서 양식' 검색 트렌드(월 18만 건) 분석 완료",
+            "무비용 사전예약 및 무료 PDF 출력용 정적 랜딩페이지 아키텍처 수립",
+            "인스타그램 릴스 30초 데모 스크립트 및 B2B 제안 메일 템플릿 자동 합성",
+            "브라우저 네이티브 A4 인쇄 엔진 탑재 완료",
+            "1주일 배포 패키지 빌드 성공!"
+          ],
+          sourceCode: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>B2B 견적 자동화 시스템</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt></head><body class="bg-slate-100 p-6"><div class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-xl border border-slate-200"><h1 class="text-xl font-black text-slate-900">B2B 견적 자동화 시스템 (30초 PDF)</h1><p class="text-xs text-slate-500 mt-1">CMO 박팀장 기획안 기반 1주일 스프린트 작동 모델</p><div class="mt-4 p-3 bg-blue-50 text-blue-800 text-xs rounded-xl font-bold">✓ 공급가액 실시간 합산 및 VAT 자동 계산 가동 중</div><button onclick="window.print()" class="mt-4 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl">🖨️ PDF 견적서 출력 / 저장</button></div></body></html>`
+        },
+        {
+          id: 102,
+          cycle: "1month",
+          cycleLabel: "🚀 1개월 중기 로드맵",
+          officer: "COO 김실장 (운영·개발 총괄)",
+          avatar: "⚙️",
+          title: "노코드 AI 5대 부서 템플릿 디지털 번들 정식 론칭 & 월 매출 500만 원 달성",
+          reason: "“사장님, 1주일 스프린트로 모은 100명 중 15%가 유료 템플릿 구매 의사를 밝혔습니다. 이번 한 달간 5개 AI 참모 프롬프트와 SOP를 49,000원에 디지털 번들로 묶어 자동 판매 시스템을 가동할 것을 건의합니다.”",
+          roi: "판매가 49,000원 | 순마진율 96% | 목표 월 매출 500만 원",
+          actionPlan: "1주차 세일즈 페이지 오픈 ➔ 2주차 토스페이먼츠 간편결제 연동 ➔ 3~4주차 자동 복제 링크 발송",
+          status: "pending",
+          date: "10-22 09:40",
+          filename: "ai-office-bundle.html",
+          marketReport: `[COO 김실장의 1개월 수익화 분석]
+- 수요 검증: 크몽, 텀블벅에서 1인 사업자용 노션 템플릿 월 1,500건 결제 확인.
+- 가격 포지셔닝: 타사 단품 전자책(2만 원) 대비 5대 부서 올인원 번들 49,000원 책정으로 객단가 극대화.
+- 운영 마진: 디지털 다운로드 모델이므로 서버 및 물류 원가 0원 -> 96% 순마진율 확정.`,
+          buildLogs: [
+            "COO 김실장: 5개 부서별 고효율 프롬프트 25종 및 표준 운영 가이드(SOP) 패키징",
+            "Tailwind 기반 반응형 다크모드 세일즈 랜딩페이지 자동 퍼블리싱",
+            "토스페이먼츠/카카오페이 간편결제 연동 UI 레이아웃 검증",
+            "단일 standalone 파일 패키징 완료!"
+          ],
+          sourceCode: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>AI 5대 부서 디지털 번들</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt></head><body class="bg-gray-950 text-white p-6"><div class="max-w-md mx-auto space-y-4"><h1 class="text-xl font-black text-amber-400">AI 5대 부서 운영 템플릿 마스터팩</h1><p class="text-xs text-gray-400">1개월 로드맵 목표: 순마진 96% 달성</p><div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-xs space-y-1"><p>✓ 비서실장 / 기획연구소 / 사외이사 / 소통실 / 결재함</p><p class="text-amber-400 font-bold">얼리버드 판매가: 49,000원</p></div><button onclick="alert('결제창이 호출되었습니다.')" class="w-full py-3 bg-amber-500 text-gray-950 font-bold rounded-xl text-xs">즉시 구매 & 소장</button></div></body></html>`
+        },
+        {
+          id: 103,
+          cycle: "6month",
+          cycleLabel: "📈 6개월 도약 로드맵",
+          officer: "CFO 최이사 (재무·투자 총괄)",
+          avatar: "💰",
+          title: "Vercel Pro 글로벌 서버리스 인프라 고정비 방어 & 연간 구독 ARR 5,000만 원 확보",
+          reason: "“사장님, 단건 결제만으로는 6개월 뒤 현금흐름이 흔들립니다. Vercel Pro 서버리스 캐싱으로 월 $20에 고정 지출을 묶어두고, 고객들에게 연간 30% 할인 결제를 유도해 6개월치 안전 런웨이(2,000만 원)를 먼저 통장에 꽂아야 합니다.”",
+          roi: "월 인프라 비용 $20 고정 | 연간 구독(ARR) 5,000만 원 확정",
+          actionPlan: "1~2개월차 연간 플랜 출시 ➔ 3~4개월차 엣지 CDN 99.9% 무중단 방어 ➔ 5~6개월차 안전 자금 2,000만 원 유치",
+          status: "pending",
+          date: "10-22 09:10",
+          filename: "zero-cost-guard.html",
+          marketReport: `[CFO 최이사의 6개월 재무·인프라 리포트]
+- 비용 통제: 온프레미스 서버 엔지니어 고용(월 400만 원) 대신 Vercel 서버리스로 월 2.7만 원 고정.
+- 단위 경제학: CAC(고객 획득비) 3.5만 원 이하 통제 시 연간 결제자 100명으로 ARR 5,000만 원 무결점 방어.
+- 다운타임 리스크: 글로벌 CDN 300+ 거점 분산으로 트래픽 폭증 시 0.00초 다운타임 보증.`,
+          buildLogs: [
+            "CFO 최이사: 연간 반복 매출(ARR) 시뮬레이션 및 현금 런웨이 모델링 완료",
+            "Vercel Edge 서버리스 인프라 모니터링 대시보드 코딩",
+            "실시간 응답 속도(18ms) 및 비용 절감 계측기 합성",
+            "패키징 완료!"
+          ],
+          sourceCode: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>서버리스 인프라 모니터</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt></head><body class="bg-[#090D16] text-white p-6"><div class="max-w-md mx-auto space-y-4"><h1 class="text-sm font-bold text-emerald-400">Vercel Edge 6개월 인프라 가디언</h1><div class="bg-gray-900 p-4 rounded-xl text-xs space-y-2"><p>월 고정비: $20.00 (연간 4,800만 원 고정비 절감)</p><p>캐시 적중률: 99.8% (응답속도 18ms)</p></div></div></body></html>`
+        },
+        {
+          id: 104,
+          cycle: "1year",
+          cycleLabel: "👑 1년 장기 비전 로드맵",
+          officer: "CSO 정이사 (신사업 전략총괄)",
+          avatar: "🏛️",
+          title: "B2B 화이트라벨 에이전시 프랜차이즈 독점 공급 계약 & 무인 기업 연 매출 1억 완성",
+          reason: "“사장님, 1인 기업의 궁극적 완성은 사장님이 자리를 비워도 B2B 에이전시들이 라이선스 비를 내는 구조입니다. 당사 AI 파이프라인을 특정 마케팅 대행사 5곳에 화이트라벨로 각 800만 원(선금 50%)에 독점 공급하는 1년 로드맵을 상신합니다.”",
+          roi: "계약금 800만 원 × 5개사 = 4,000만 원 즉시 수령 (연 매출 1억 원 무인 돌파)",
+          actionPlan: "상반기 화이트라벨 브랜드 전환 엔진 구축 ➔ 하반기 에이전시 5곳 B2B 독점 납품 ➔ 사장님 완전 자동화 엑시트 체제 구축",
+          status: "pending",
+          date: "10-22 08:30",
+          filename: "whitelabel-solution.html",
+          marketReport: `[CSO 정이사의 1년 장기 비전 보고서]
+- 시장 니즈: 마케팅 대행사 80%가 제안서/카피라이팅 작성 공수 부족으로 외주 용역비 연간 3,000만 원 이상 지출 중.
+- 독점 납품 가치: 대행사 자체 로고를 붙인 맞춤형 포털을 제공함으로써 3일 만에 납품 완료하고 선금 50% 회수.
+- 최종 목표: 1인 대표님의 노동 투입 제로화 & 연간 반복 로열티 수익 시스템 완성.`,
+          buildLogs: [
+            "CSO 정이사: B2B 화이트라벨 에이전시 독점 계약 조항 및 전자 서명 모듈 합성",
+            "브랜드 스위처(로고·도메인 커스텀) 프론트엔드 엔진 코딩",
+            "클라이언트 포털 단일 standalone 패키징 완료!"
+          ],
+          sourceCode: `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>B2B 화이트라벨 포털</title><script src="https://cdn.tailwindcss.com/3.4.17"></scr` + `ipt></head><body class="bg-slate-900 text-white p-6"><div class="max-w-md mx-auto space-y-4"><h1 class="text-sm font-bold text-amber-400">Agency White-label Portal (1년 비전 모델)</h1><div class="bg-slate-800 p-4 rounded-xl text-xs space-y-2"><p class="text-emerald-400 font-bold">✓ 독점 납품 계약금: 800만 원 (선금 50% 수령)</p><p>클라이언트사 전용 브랜딩 무인 가동 포털</p></div></div></body></html>`
+        }
+      ];
+
+      let proposals = [];
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          proposals = JSON.parse(saved);
+        } else {
+          proposals = PROPOSALS_DATA;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(proposals));
+        }
+      } catch (e) {
+        proposals = PROPOSALS_DATA;
+      }
+
+      let activeCycleFilter = "all";
+      let activeTargetId = null;
+      let activeActionType = null;
+      let machineRunningInterval = null;
+      let currentActiveProjectCode = "";
+      let currentActiveFilename = "project.html";
+
+      function showToast(msg, icon) {
+        if (!icon) icon = "⚡";
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-msg").textContent = msg;
+        document.getElementById("toast-icon").textContent = icon;
+        toast.classList.remove("opacity-0", "-translate-y-4");
+        setTimeout(function() {
+          toast.classList.add("opacity-0", "-translate-y-4");
+        }, 2200);
+      }
+
+      function saveData() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(proposals));
+        } catch (e) {}
+        render();
+      }
+
+      function render() {
+        const pendingContainer = document.getElementById("view-pending");
+        const historyContainer = document.getElementById("view-history");
+        pendingContainer.innerHTML = "";
+        historyContainer.innerHTML = "";
+
+        const pendingList = proposals.filter(function(p) {
+          if (p.status !== "pending") return false;
+          if (activeCycleFilter === "all") return true;
+          return p.cycle === activeCycleFilter;
+        });
+
+        const historyList = proposals.filter(function(p) {
+          return p.status !== "pending";
+        });
+
+        document.getElementById("badge-pending").textContent = proposals.filter(p => p.status === "pending").length;
+        document.getElementById("badge-history").textContent = historyList.length;
+
+        // Render Pending Proposals
+        if (pendingList.length === 0) {
+          pendingContainer.innerHTML = '<div class="py-16 text-center text-xs text-gray-500"><div class="text-3xl mb-2">🎉</div><div class="font-bold text-gray-300">선택하신 주기의 결재 안건이 모두 완결되었습니다!</div><div class="text-[11px] text-gray-500 mt-1">상단의 [🎙️ 자율기획 상신] 버튼을 누르면 AI 참모진이 새로운 안건을 회의하여 상신합니다.</div></div>';
+        } else {
+          pendingList.forEach(function(p) {
+            const card = document.createElement("div");
+            card.className = "glass-card rounded-2xl p-4 space-y-3 border border-gray-800 transition active:scale-[0.99]";
+            card.innerHTML = 
+              '<div class="flex items-center justify-between text-[11px]">' +
+                '<span class="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 font-bold border border-amber-500/30 flex items-center gap-1">' +
+                  '<span>' + p.avatar + '</span> <span>' + p.officer + '</span>' +
+                '</span>' +
+                '<span class="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-extrabold text-[10px] border border-blue-500/20">' + p.cycleLabel + '</span>' +
+              '</div>' +
+              '<div>' +
+                '<h3 class="text-sm font-extrabold text-white leading-snug">' + p.title + '</h3>' +
+                '<div class="mt-2 text-xs text-amber-300/90 italic bg-gray-950/80 p-2.5 rounded-xl border border-gray-800/90 leading-relaxed">' +
+                  p.reason +
+                '</div>' +
+                '<div class="mt-2 text-[11px] text-emerald-400 font-semibold flex items-center gap-1">' +
+                  '<span>💰</span> <span>' + p.roi + '</span>' +
+                '</div>' +
+                '<div class="mt-1 text-[11px] text-gray-400 flex items-center gap-1">' +
+                  '<span>🗺️</span> <span><strong>실행 로드맵:</strong> ' + p.actionPlan + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="grid grid-cols-3 gap-2 pt-1 border-t border-gray-800/80 mt-2">' +
+                '<button type="button" class="btn-approve-auto py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-black text-xs transition border border-emerald-400 active:scale-95 flex items-center justify-center gap-1 shadow-md shadow-emerald-500/20" data-id="' + p.id + '">' +
+                  '<span>✓</span> 최종 결재(착수)' +
+                '</button>' +
+                '<button type="button" class="btn-custom-action py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black font-extrabold text-xs transition border border-amber-500/30 active:scale-95 flex items-center justify-center gap-1" data-id="' + p.id + '" data-action="hold">' +
+                  '<span>⚖️</span> 조건부 지시' +
+                '</button>' +
+                '<button type="button" class="btn-custom-action py-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-black font-extrabold text-xs transition border border-rose-500/30 active:scale-95 flex items-center justify-center gap-1" data-id="' + p.id + '" data-action="rejected">' +
+                  '<span>✕</span> 반려' +
+                '</button>' +
+              '</div>';
+            pendingContainer.appendChild(card);
+          });
+        }
+
+        // Render History
+        if (historyList.length === 0) {
+          historyContainer.innerHTML = '<div class="py-12 text-center text-xs text-gray-500">아직 가동 중인 프로젝트 내역이 없습니다.</div>';
+        } else {
+          historyList.forEach(function(p) {
+            let statusBadge = "";
+            let actionButtons = "";
+            if (p.status === "approved" || p.status === "completed") {
+              statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">가동·배포 완료</span>';
+              actionButtons = 
+                '<div class="pt-2 flex gap-2">' +
+                  '<button type="button" class="btn-history-play flex-1 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold text-xs border border-emerald-500/30 transition active:scale-95 flex items-center justify-center gap-1" data-id="' + p.id + '">' +
+                    '<span>▶️</span> 실제 웹앱 가동' +
+                  '</button>' +
+                  '<button type="button" class="btn-history-dl flex-1 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black font-bold text-xs border border-amber-500/30 transition active:scale-95 flex items-center justify-center gap-1" data-id="' + p.id + '">' +
+                    '<span>💾</span> 파일 받기' +
+                  '</button>' +
+                '</div>';
+            } else if (p.status === "hold") {
+              statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300">조건부 보류</span>';
+            } else {
+              statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300">반려 처리</span>';
+            }
+
+            const card = document.createElement("div");
+            card.className = "glass-card rounded-2xl p-4 space-y-2 border border-gray-800 text-xs";
+            card.innerHTML = 
+              '<div class="flex items-center justify-between">' +
+                '<span class="text-[11px] text-gray-400 font-semibold">' + p.officer + ' · ' + p.cycleLabel + '</span>' +
+                statusBadge +
+              '</div>' +
+              '<div class="font-extrabold text-white text-sm">' + p.title + '</div>' +
+              (p.note ? '<div class="p-2 rounded-lg bg-gray-950 text-gray-300 text-[11px] border border-gray-800"><strong class="text-amber-400">사장 지시:</strong> ' + p.note + '</div>' : '') +
+              actionButtons +
+              '<div class="flex items-center justify-between text-[10px] text-gray-500 pt-1 border-t border-gray-800/60 mt-2">' +
+                '<span>결재 일시: ' + (p.processedAt || p.date) + '</span>' +
+                '<button type="button" class="btn-revert text-gray-400 hover:text-white underline" data-id="' + p.id + '">대기함으로 되돌리기</button>' +
+              '</div>';
+            historyContainer.appendChild(card);
+          });
+        }
+
+        attachEvents();
+      }
+
+      function attachEvents() {
+        // One-touch approve
+        document.querySelectorAll(".btn-approve-auto").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            const id = parseInt(btn.dataset.id, 10);
+            startAutonomousMachine(id);
+          });
+        });
+
+        // Note modal
+        document.querySelectorAll(".btn-custom-action").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            const id = parseInt(btn.dataset.id, 10);
+            const action = btn.dataset.action;
+            const item = proposals.find(function(p) { return p.id === id; });
+            if (!item) return;
+
+            activeTargetId = id;
+            activeActionType = action;
+
+            const modalBadge = document.getElementById("modal-action-badge");
+            if (action === "hold") {
+              modalBadge.textContent = "⚖️ 조건부 수정 지시";
+              modalBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30";
+              document.getElementById("modal-note-input").placeholder = "수정 요건이나 보완할 방향을 적어주세요...";
+            } else {
+              modalBadge.textContent = "✕ 반려 처리";
+              modalBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30";
+              document.getElementById("modal-note-input").placeholder = "반려 사유나 다른 대안을 지시해주세요...";
+            }
+
+            document.getElementById("modal-target-title").textContent = item.title;
+            document.getElementById("modal-note-input").value = "";
+            document.getElementById("modal-action").classList.remove("hidden");
+            document.getElementById("modal-action").classList.add("flex");
+            document.getElementById("modal-note-input").focus();
+          });
+        });
+
+        // Revert
+        document.querySelectorAll(".btn-revert").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            const id = parseInt(btn.dataset.id, 10);
+            const item = proposals.find(function(p) { return p.id === id; });
+            if (item) {
+              item.status = "pending";
+              saveData();
+              showToast("안건이 다시 결재 대기함으로 이동했습니다.", "↩️");
+            }
+          });
+        });
+
+        // Play in Sandbox
+        document.querySelectorAll(".btn-history-play").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            const id = parseInt(btn.dataset.id, 10);
+            openSandboxForProject(id);
+          });
+        });
+
+        // Download
+        document.querySelectorAll(".btn-history-dl").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            const id = parseInt(btn.dataset.id, 10);
+            downloadProjectFile(id);
+          });
+        });
+      }
+
+      // Autonomous Machine Engine
+      function startAutonomousMachine(id) {
+        const item = proposals.find(function(p) { return p.id === id; });
+        if (!item) return;
+
+        currentActiveProjectCode = item.sourceCode;
+        currentActiveFilename = item.filename;
+
+        document.getElementById("machine-project-title").textContent = item.title;
+        document.getElementById("machine-percent").textContent = "0%";
+        document.getElementById("machine-progress-fill").style.width = "0%";
+        document.getElementById("machine-status-text").innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> ' + item.officer + '의 지휘 하에 자율 검증 착수...';
+        document.getElementById("machine-terminal-log").innerHTML = "";
+        document.getElementById("machine-market-box").classList.add("hidden");
+        document.getElementById("machine-success-actions").classList.add("hidden");
+
+        const modal = document.getElementById("modal-machine");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+        let progress = 0;
+        let logIndex = 0;
+        const totalLogs = item.buildLogs;
+
+        if (machineRunningInterval) clearInterval(machineRunningInterval);
+
+        function addLog(text) {
+          const terminal = document.getElementById("machine-terminal-log");
+          const line = document.createElement("div");
+          const time = new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+          line.className = "flex items-start gap-1.5";
+          line.innerHTML = '<span class="text-gray-500 font-mono">[' + time + ']</span> <span class="text-emerald-300">✓</span> <span>' + text + '</span>';
+          terminal.appendChild(line);
+          terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        addLog("사장님 [최종 결재] 수신 ➔ " + item.officer + " 자율 집행 개시");
+
+        machineRunningInterval = setInterval(function() {
+          progress += Math.floor(Math.random() * 8) + 6;
+          if (progress > 100) progress = 100;
+
+          document.getElementById("machine-percent").textContent = progress + "%";
+          document.getElementById("machine-progress-fill").style.width = progress + "%";
+
+          if (progress >= 20 && logIndex === 0 && totalLogs[0]) {
+            addLog(totalLogs[0]);
+            logIndex = 1;
+            document.getElementById("phase-lbl-1").className = "text-emerald-400 font-bold";
+            document.getElementById("phase-lbl-2").className = "text-emerald-400 font-bold";
+            document.getElementById("machine-step-badge").textContent = "2단계: 홍보·유통 에셋 준비";
+            document.getElementById("machine-status-text").innerHTML = '<span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> [마케팅 동시 가동] 릴스 대본 및 콜드메일 합성 중...';
+          } else if (progress >= 45 && logIndex === 1 && totalLogs[1]) {
+            addLog(totalLogs[1]);
+            logIndex = 2;
+          } else if (progress >= 60 && logIndex === 2 && totalLogs[2]) {
+            addLog(totalLogs[2]);
+            logIndex = 3;
+            document.getElementById("phase-lbl-3").className = "text-emerald-400 font-bold";
+            document.getElementById("machine-step-badge").textContent = "3단계: 핵심 MVP 빌드";
+            document.getElementById("machine-status-text").innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span> [무비용 코딩] 1장 Standalone 웹앱 완성 중...';
+          } else if (progress >= 80 && logIndex === 3 && totalLogs[3]) {
+            addLog(totalLogs[3]);
+            logIndex = 4;
+            document.getElementById("phase-lbl-4").className = "text-emerald-400 font-bold";
+            document.getElementById("machine-step-badge").textContent = "4단계: 정식 상용화 패키징";
+            document.getElementById("machine-status-text").innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> [패키징 완료] 단일 파일 검수 및 배포 준비 완료...';
+          }
+
+          if (progress >= 100) {
+            clearInterval(machineRunningInterval);
+            addLog("🎉 [가동 개시] " + item.filename + " 패키징 성공! 사장님 개입 없이 배포 완료되었습니다.");
+            
+            document.getElementById("machine-percent").textContent = "100%";
+            document.getElementById("machine-step-badge").textContent = "완료: 무인 가동 중";
+            document.getElementById("machine-step-badge").className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+            document.getElementById("machine-status-text").innerHTML = '🚀 <strong class="text-white">프로젝트 가동 완료: 실제 웹앱 및 파일 다운로드 준비 완료!</strong>';
+
+            document.getElementById("machine-market-content").textContent = item.marketReport;
+            document.getElementById("machine-market-box").classList.remove("hidden");
+            document.getElementById("machine-success-actions").classList.remove("hidden");
+
+            item.status = "completed";
+            item.processedAt = new Date().toLocaleString("ko-KR", { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" });
+            saveData();
+            showToast("[" + item.title.substring(0, 14) + "...] 자율 가동 완료!", "🚀");
+          }
+        }, 150);
+      }
+
+      document.getElementById("btn-close-machine").addEventListener("click", function() {
+        if (machineRunningInterval) clearInterval(machineRunningInterval);
+        document.getElementById("modal-machine").classList.add("hidden");
+        document.getElementById("modal-machine").classList.remove("flex");
+      });
+
+      document.getElementById("btn-finish-machine").addEventListener("click", function() {
+        document.getElementById("modal-machine").classList.add("hidden");
+        document.getElementById("modal-machine").classList.remove("flex");
+        document.getElementById("tab-history-btn").click();
+      });
+
+      // Sandbox Preview (Blob URL for iOS Safari)
+      function openSandboxWithCode(title, htmlCode) {
+        document.getElementById("sandbox-title").textContent = title;
+        const iframe = document.getElementById("sandbox-iframe");
+        try {
+          const blob = new Blob([htmlCode], { type: "text/html;charset=utf-8" });
+          iframe.src = URL.createObjectURL(blob);
+        } catch (e) {
+          iframe.srcdoc = htmlCode;
+        }
+        document.getElementById("modal-sandbox").classList.remove("hidden");
+        document.getElementById("modal-sandbox").classList.add("flex");
+      }
+
+      function openSandboxForProject(id) {
+        const item = proposals.find(function(p) { return p.id === id; });
+        if (item) {
+          currentActiveProjectCode = item.sourceCode;
+          currentActiveFilename = item.filename;
+          openSandboxWithCode(item.title, item.sourceCode);
+        }
+      }
+
+      document.getElementById("btn-preview-app").addEventListener("click", function() {
+        openSandboxWithCode(document.getElementById("machine-project-title").textContent, currentActiveProjectCode);
+      });
+
+      document.getElementById("btn-close-sandbox").addEventListener("click", function() {
+        document.getElementById("modal-sandbox").classList.add("hidden");
+        document.getElementById("modal-sandbox").classList.remove("flex");
+        document.getElementById("sandbox-iframe").src = "about:blank";
+      });
+
+      function downloadProjectFile(id) {
+        const item = proposals.find(function(p) { return p.id === id; });
+        if (!item) return;
+        const blob = new Blob([item.sourceCode], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = item.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(item.filename + " 파일이 다운로드되었습니다!", "💾");
+      }
+
+      document.getElementById("btn-download-app-file").addEventListener("click", function() {
+        const blob = new Blob([currentActiveProjectCode], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = currentActiveFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(currentActiveFilename + " 파일이 다운로드되었습니다!", "💾");
+      });
+
+      document.getElementById("btn-sandbox-download").addEventListener("click", function() {
+        document.getElementById("btn-download-app-file").click();
+      });
+
+      // Note modal handlers
+      document.getElementById("btn-close-modal").addEventListener("click", function() {
+        document.getElementById("modal-action").classList.add("hidden");
+        document.getElementById("modal-action").classList.remove("flex");
+      });
+
+      document.querySelectorAll(".preset-tag").forEach(function(tag) {
+        tag.addEventListener("click", function() {
+          const input = document.getElementById("modal-note-input");
+          input.value = (input.value ? input.value + " / " : "") + tag.textContent;
+        });
+      });
+
+      document.getElementById("btn-confirm-action").addEventListener("click", function() {
+        if (!activeTargetId) return;
+        const item = proposals.find(function(p) { return p.id === activeTargetId; });
+        if (item) {
+          item.status = activeActionType;
+          item.note = document.getElementById("modal-note-input").value.trim();
+          item.processedAt = new Date().toLocaleString("ko-KR", { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" });
+          saveData();
+          document.getElementById("modal-action").classList.add("hidden");
+          document.getElementById("modal-action").classList.remove("flex");
+          showToast("안건이 [" + (activeActionType === "hold" ? "조건부 보류" : "반려") + "] 처리되었습니다.", activeActionType === "hold" ? "🟡" : "🔴");
+        }
+      });
+
+      // Autonomous Staff Strategy Meeting Generator
+      document.getElementById("btn-call-meeting").addEventListener("click", function() {
+        showToast("🎙️ 4대 AI 참모진이 시장 데이터를 분석하여 긴급 전략을 상신합니다...", "⚡");
+        setTimeout(function() {
+          const newId = Date.now();
+          const newProposal = {
+            id: newId,
+            cycle: "1week",
+            cycleLabel: "⚡ 1주일 긴급 안건",
+            officer: "CMO 박팀장 (마케팅 총괄)",
+            avatar: "📢",
+            title: "네이버 스마트스토어 1인 셀러 타깃 상세 카피 자동생성기 긴급 론칭",
+            reason: "“사장님, 오픈마켓 셀러들이 상세페이지 작성에 주당 20시간을 쏟고 있습니다. 1주일간 무료 생성 5회 체험기를 커뮤니티에 살포해 결제 대기 고객 200명을 선점하겠습니다.”",
+            roi: "사전예약 리드 200명 선확보 | 순마진 98%",
+            actionPlan: "Day 1 인스타 릴스 배포 ➔ Day 3 네이버 카페 무료 배포 ➔ Day 7 유료 Pro 승인제 오픈",
+            status: "pending",
+            date: new Date().toLocaleString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
+            filename: "seller-copy-mvp.html",
+            marketReport: "[CMO 자율 분석] 스마트스토어 신규 등록 셀러 35만 명 타깃. 상세페이지 외주비(건당 15만 원) 절감 소구.",
+            buildLogs: [
+              "CMO 박팀장: 네이버 쇼핑 태그 딕셔너리 연동 완료",
+              "쿠팡 50자 상품명 알고리즘 최적화 엔진 합성",
+              "긴급 MVP 빌드 성공!"
+            ],
+            sourceCode: "<!DOCTYPE html><html><body style='background:#0f172a;color:#fff;font-family:sans-serif;padding:30px;'><h1>셀러카피 AI 긴급 MVP</h1><p>CMO 박팀장의 자율 기획으로 상신되어 배포되었습니다.</p></body></html>"
+          };
+          proposals.unshift(newProposal);
+          saveData();
+          showToast("신규 안건이 상신되었습니다! 결재 대기함을 확인하세요.", "📋");
+        }, 800);
+      });
+
+      // Cycle Filter Buttons
+      document.querySelectorAll(".cycle-filter-btn").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          document.querySelectorAll(".cycle-filter-btn").forEach(function(b) {
+            b.className = "cycle-filter-btn py-1.5 rounded-lg text-gray-400 hover:text-white transition";
+          });
+          btn.className = "cycle-filter-btn py-1.5 rounded-lg bg-amber-500 text-gray-950 font-bold transition";
+          activeCycleFilter = btn.dataset.cycle;
+          render();
+        });
+      });
+
+      // Tab Switcher
+      const tabPendingBtn = document.getElementById("tab-pending-btn");
+      const tabHistoryBtn = document.getElementById("tab-history-btn");
+      const viewPending = document.getElementById("view-pending");
+      const viewHistory = document.getElementById("view-history");
+
+      tabPendingBtn.addEventListener("click", function() {
+        tabPendingBtn.className = "py-1.5 rounded-lg bg-gray-800 text-amber-400 font-bold transition flex items-center justify-center gap-1.5";
+        tabHistoryBtn.className = "py-1.5 rounded-lg text-gray-400 hover:text-white transition flex items-center justify-center gap-1.5";
+        viewPending.classList.remove("hidden");
+        viewHistory.classList.add("hidden");
+      });
+
+      tabHistoryBtn.addEventListener("click", function() {
+        tabHistoryBtn.className = "py-1.5 rounded-lg bg-gray-800 text-amber-400 font-bold transition flex items-center justify-center gap-1.5";
+        tabPendingBtn.className = "py-1.5 rounded-lg text-gray-400 hover:text-white transition flex items-center justify-center gap-1.5";
+        viewHistory.classList.remove("hidden");
+        viewPending.classList.add("hidden");
+      });
+
+      // Export JSON
+      document.getElementById("btn-export-log").addEventListener("click", function() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(proposals, null, 2));
+        const downloadAnchor = document.createElement("a");
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "ceo_decisions_" + new Date().toISOString().slice(0, 10) + ".json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast("경영 데이터가 다운로드되었습니다.");
+      });
+
+      // Save master index.html to phone
+      document.getElementById("btn-download-file").addEventListener("click", function() {
+        const fullDoc = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        const blob = new Blob([fullDoc], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "index.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("index.html 파일이 다운로드되었습니다!", "💾");
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
